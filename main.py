@@ -38,6 +38,12 @@ def view_catalog(message):
     bot.send_message(message.chat.id, 'Каталог', reply_markup=catalog)
 
 
+@bot.callback_query_handler(func = lambda call: True)
+def print_all_commands(call):
+    if call.data == 'auto':
+        print(123)
+
+
 bot.polling(none_stop=True, interval=0)
 
 
