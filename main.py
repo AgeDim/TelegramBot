@@ -4,7 +4,6 @@ from io import BytesIO
 import telebot
 from telebot import types
 import dataBase
-import math
 
 bot = telebot.TeleBot('5125730563:AAFr0-wAfF8eas0EcPqnmZ6W2MpHrCgV_vU')
 

@@ -1,4 +1,3 @@
 pyTelegramBotAPI
-io
+BytesIO
 urllib
-math
