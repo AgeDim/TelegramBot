@@ -1,5 +1,9 @@
+import urllib
+from io import BytesIO
+
 import telebot
 from telebot import types
+import dataBase
 
 bot = telebot.TeleBot('5125730563:AAFr0-wAfF8eas0EcPqnmZ6W2MpHrCgV_vU')
 
@@ -12,12 +16,14 @@ def start(message):
 
 @bot.message_handler(commands=["info", "Info"])
 def info(message):
-    bot.send_message(message.chat.id, f"Номер телефона:\n   +77782185661\n  +77017490261\nАдрес: Брюсова 4/35 офис 1\nПочта: Rus0867@Mail.Ru\nГрафик работы: Пн - Пт / 9:00 - 18:00\nСайт:comtrade.kz")
+    bot.send_message(message.chat.id,
+                     f"Номер телефона:\n   +77782185661\n  +77017490261\nАдрес: Брюсова 4/35 офис 1\nПочта: Rus0867@Mail.Ru\nГрафик работы: Пн - Пт / 9:00 - 18:00\nСайт:comtrade.kz")
 
 
 @bot.message_handler(commands=['help', 'Help'])
 def help(message):
-    bot.send_message(message.chat.id, f'/start - Приветствие\n/info - Информация о компании\n/help - Каталог товаров\n/catalog - Доступные команды')
+    bot.send_message(message.chat.id,
+                     f'/start - Приветствие\n/info - Информация о компании\n/help - Каталог товаров\n/catalog - Доступные команды')
 
 
 @bot.message_handler(commands=['catalog', 'Catalog'])
@@ -30,7 +36,8 @@ def view_catalog(message):
     biton = types.InlineKeyboardButton(text="Добавки для бетона", callback_data='biton')
     paint = types.InlineKeyboardButton(text="Лаки, краски, растворители", callback_data='paint')
     fire = types.InlineKeyboardButton(text="Огнебиозащитные составы", callback_data='fire')
-    mineral = types.InlineKeyboardButton(text="Очистка, защита и обработка минеральных поверхностей",callback_data='mineral')
+    mineral = types.InlineKeyboardButton(text="Очистка, защита и обработка минеральных поверхностей",
+                                         callback_data='mineral')
     bath = types.InlineKeyboardButton(text="Составы для бань и саун", callback_data='bath')
     decor = types.InlineKeyboardButton(text="Фасадный декор", callback_data='decor')
     pool = types.InlineKeyboardButton(text="Химия для бассейнов", callback_data='pool')
@@ -38,15 +45,20 @@ def view_catalog(message):
     bot.send_message(message.chat.id, 'Каталог', reply_markup=catalog)
 
 
-@bot.callback_query_handler(func = lambda call: True)
+@bot.callback_query_handler(func=lambda call: True)
 def print_all_commands(call):
-    if call.data == 'auto':
-        print(123)
+    match str(call.data):
+        case 'auto':
+            res = dataBase.getPic(call.data)
+
+    for data in res:
+        img = BytesIO(urllib.request.urlopen(data.url).read())
+        bot.send_chat_action(call.chat.id, 'upload_photo')
+        bot.send_photo(call.chat.id, img)
+        bot.send_message(call.chat.id, str(data.review))
 
 
 bot.polling(none_stop=True, interval=0)
-
-
 
 # start - Преветствие
 # info - Информация о компании
