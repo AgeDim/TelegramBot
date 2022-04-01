@@ -60,7 +60,7 @@ def print_all_commands(call):
             ress.append(types.InlineKeyboardButton(text=data.review, callback_data=data.id))
         for i in range(len(ress)):
             preCatalog.add(ress[i])
-        bot.send_message(call.message.chat.id, call.data, reply_markup=preCatalog)
+        bot.send_message(call.message.chat.id, call.text, reply_markup=preCatalog)
         # for data in res:
         #     img = Image.open(data.url)
         #     bot.send_chat_action(call.message.chat.id, 'upload_photo')
