@@ -30,6 +30,7 @@ def help(message):
 def view_catalog(message):
     bot.send_message(message.chat.id, 'Каталог', reply_markup=catalog)
 
+
 infoMessage = 'Подробную информацию можно посмотреть на сайте: comtrade.kz'
 catalog = types.InlineKeyboardMarkup(row_width=1)
 autochem = types.InlineKeyboardButton(text="АвтоХимия", callback_data='auto')
