@@ -32,47 +32,55 @@ def view_catalog(message):
 
 
 catalog = types.InlineKeyboardMarkup(row_width=1)
-autochem = types.InlineKeyboardButton(text="АвтоХимия", callback_data='auto')
-wood = types.InlineKeyboardButton(text="Антисептики, отбеливатели для древесины", callback_data='wood')
-household = types.InlineKeyboardButton(text="Бытовая химия", callback_data='life')
-hydro = types.InlineKeyboardButton(text="Гидроизоляционные материалы", callback_data='hydro')
-biton = types.InlineKeyboardButton(text="Добавки для бетона", callback_data='biton')
-paint = types.InlineKeyboardButton(text="Лаки, краски, растворители", callback_data='paint')
-fire = types.InlineKeyboardButton(text="Огнебиозащитные составы", callback_data='fire')
+autochem = types.InlineKeyboardButton(text="АвтоХимия", callback_data='АвтоХимия')
+wood = types.InlineKeyboardButton(text="Антисептики, отбеливатели для древесины",
+                                  callback_data='Антисептики, отбеливатели для древесины')
+household = types.InlineKeyboardButton(text="Бытовая химия", callback_data='Бытовая химия')
+hydro = types.InlineKeyboardButton(text="Гидроизоляционные материалы", callback_data='Гидроизоляционные материалы')
+biton = types.InlineKeyboardButton(text="Добавки для бетона", callback_data='Добавки для бетона')
+paint = types.InlineKeyboardButton(text="Лаки, краски, растворители", callback_data='Лаки, краски, растворители')
+fire = types.InlineKeyboardButton(text="Огнебиозащитные составы", callback_data='Огнебиозащитные составы')
 mineral = types.InlineKeyboardButton(text="Очистка, защита и обработка минеральных поверхностей",
-                                         callback_data='mineral')
-bath = types.InlineKeyboardButton(text="Составы для бань и саун", callback_data='bath')
-decor = types.InlineKeyboardButton(text="Фасадный декор", callback_data='decor')
-pool = types.InlineKeyboardButton(text="Химия для бассейнов", callback_data='pool')
+                                     callback_data='Очистка, защита и обработка минеральных поверхностей')
+bath = types.InlineKeyboardButton(text="Составы для бань и саун", callback_data='Составы для бань и саун')
+decor = types.InlineKeyboardButton(text="Фасадный декор", callback_data='Фасадный декор')
+pool = types.InlineKeyboardButton(text="Химия для бассейнов", callback_data='Химия для бассейнов')
 catalog.add(autochem, wood, household, hydro, biton, paint, fire, mineral, bath, decor, pool)
 
 keyboard = types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True, one_time_keyboard=True)
 button = types.KeyboardButton(text="Назад!")
 keyboard.add(button)
 
+
 @bot.callback_query_handler(func=lambda call: True)
 def print_all_commands(call):
+    catalogList = ["АвтоХимия", "Антисептики, отбеливатели для древесины", "Бытовая химия",
+                   "Гидроизоляционные материалы", "Добавки для бетона", "Лаки, краски, растворители",
+                   "Огнебиозащитные составы", "Очистка, защита и обработка минеральных поверхностей",
+                   "Составы для бань и саун", "Фасадный декор", "Химия для бассейнов"]
     if call.data:
-        ress = []
-        res = dataBase.getPic(call.data)
-        preCatalog = types.InlineKeyboardMarkup(row_width=1)
-        for data in res:
-            ress.append(types.InlineKeyboardButton(text=data.review, callback_data=data.id))
-        for i in range(len(ress)):
-            preCatalog.add(ress[i])
-        bot.send_message(call.message.chat.id, call.text, reply_markup=preCatalog)
+        if call.data in catalogList:
+            ress = []
+            res = dataBase.getPic(call.data)
+            preCatalog = types.InlineKeyboardMarkup(row_width=1)
+            for data in res:
+                ress.append(types.InlineKeyboardButton(text=data.review, callback_data=data.id))
+            for i in range(len(ress)):
+                preCatalog.add(ress[i])
+            bot.send_message(call.message.chat.id, call.data, reply_markup=preCatalog)
+
         # for data in res:
         #     img = Image.open(data.url)
         #     bot.send_chat_action(call.message.chat.id, 'upload_photo')
         #     bot.send_photo(call.message.chat.id, img)
         #     bot.send_message(call.message.chat.id, str(data.review), reply_markup=keyboard)
 
+
 @bot.message_handler(content_types=['text'])
 def getText(message):
     if message.text == 'Назад!':
         bot.send_message(message.chat.id, 'Каталог', reply_markup=catalog)
         types.ReplyKeyboardRemove()
-
 
 
 bot.polling(none_stop=True, interval=0)
