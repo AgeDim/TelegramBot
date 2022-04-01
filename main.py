@@ -58,22 +58,24 @@ def print_all_commands(call):
                    "Гидроизоляционные материалы", "Добавки для бетона", "Лаки, краски, растворители",
                    "Огнебиозащитные составы", "Очистка, защита и обработка минеральных поверхностей",
                    "Составы для бань и саун", "Фасадный декор", "Химия для бассейнов"]
+    ids = [str(i for i in range(1, 61))]
     if call.data:
+        res = dataBase.getPic(call.data)
         if call.data in catalogList:
             ress = []
-            res = dataBase.getPic(call.data)
             preCatalog = types.InlineKeyboardMarkup(row_width=1)
             for data in res:
                 ress.append(types.InlineKeyboardButton(text=data.review, callback_data=data.id))
             for i in range(len(ress)):
                 preCatalog.add(ress[i])
             bot.send_message(call.message.chat.id, call.data, reply_markup=preCatalog)
-
-        # for data in res:
-        #     img = Image.open(data.url)
-        #     bot.send_chat_action(call.message.chat.id, 'upload_photo')
-        #     bot.send_photo(call.message.chat.id, img)
-        #     bot.send_message(call.message.chat.id, str(data.review), reply_markup=keyboard)
+        if call.data in ids:
+            for data in res:
+                if data.id == call.data:
+                    img = Image.open(data.url)
+                    bot.send_chat_action(call.message.chat.id, 'upload_photo')
+                    bot.send_photo(call.message.chat.id, img)
+                    bot.send_message(call.message.chat.id, str(data.review), reply_markup=keyboard)
 
 
 @bot.message_handler(content_types=['text'])
