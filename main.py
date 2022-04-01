@@ -50,12 +50,17 @@ keyboard = types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True, one_time
 button = types.KeyboardButton(text="Назад в каталог!")
 button2 = types.KeyboardButton(text="Назад в категорию!")
 keyboard.add(button, button2)
-global category
+
 
 @bot.callback_query_handler(func=lambda call: True)
 def print_all_commands(call):
-    ids = [str(i) for i in range(1,62)]
-    dictOfCategory = {"АвтоХимия": 'auto', "Антисептики, отбеливатели для древесины" : 'wood', "Гидроизоляционные материалы" : 'hydro', "Добавки для бетона" : 'biton', "Лаки, краски, растворители" : 'paint', "Огнебиозащитные составы" : 'fire', "Очистка, защита и обработка минеральных поверхностей" : 'mineral', "Составы для бань и саун" : 'bath', "Фасадный декор" : 'decor', "Химия для бассейнов" : 'pool', "Бытовая химия": 'life'}
+    ids = [str(i) for i in range(1, 62)]
+    dictOfCategory = {"АвтоХимия": 'auto', "Антисептики, отбеливатели для древесины": 'wood',
+                      "Гидроизоляционные материалы": 'hydro', "Добавки для бетона": 'biton',
+                      "Лаки, краски, растворители": 'paint', "Огнебиозащитные составы": 'fire',
+                      "Очистка, защита и обработка минеральных поверхностей": 'mineral',
+                      "Составы для бань и саун": 'bath', "Фасадный декор": 'decor', "Химия для бассейнов": 'pool',
+                      "Бытовая химия": 'life'}
     catalogList = dictOfCategory.values()
     if call.data:
         if call.data in catalogList:
@@ -66,7 +71,6 @@ def print_all_commands(call):
                 ress.append(types.InlineKeyboardButton(text=data.review, callback_data=data.id))
             for i in range(len(ress)):
                 preCatalog.add(ress[i])
-            category = preCatalog
             for key, val in dictOfCategory.items():
                 if call.data == val:
                     bot.send_message(call.message.chat.id, key, reply_markup=preCatalog)
@@ -81,8 +85,6 @@ def print_all_commands(call):
 def getText(message):
     if message.text == 'Назад в каталог!':
         bot.send_message(message.chat.id, 'Каталог', reply_markup=catalog)
-    if message.text == 'Назад в категорию!':
-        bot.send_message(message.chat.id, 'Каталог', reply_markup=category)
 
 
 bot.polling(none_stop=True, interval=0)
