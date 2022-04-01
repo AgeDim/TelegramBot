@@ -6,10 +6,10 @@ def getPic(typeOfPic):
     global res
     res = []
     conn = psycopg2.connect(
-      database="dd86jtje2j77cm",
-      user="kywvximbjqrwcc",
-      password="a3b29c5b241080cdc2d6a8b338a11d478da374452824e6738b0cac1e4504f7d9",
-      host="ec2-34-231-63-30.compute-1.amazonaws.com",
+      database="d5o66qkp7fa9if",
+      user="bozhbeiwwhicaz",
+      password="1f36e00b25d90d1462a588ddabf2fae0ffbf09a1c3528c61d9888c8cecd0531d",
+      host="ec2-34-194-73-236.compute-1.amazonaws.com",
       port="5432"
     )
     cur = conn.cursor()
