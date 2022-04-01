@@ -71,7 +71,6 @@ def print_all_commands(call):
         if call.data in ids:
             res = dataBase.getPicById(call.data)
             img = Image.open(res.url)
-            bot.send_chat_action(call.message.chat.id, 'upload_photo')
             bot.send_photo(call.message.chat.id, img)
             bot.send_message(call.message.chat.id, str(res.review), reply_markup=keyboard)
 

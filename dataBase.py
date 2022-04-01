@@ -23,7 +23,6 @@ def getPic(typeOfPic):
 
 
 def getPicById(id):
-    result = data()
     conn = psycopg2.connect(
         database="d5o66qkp7fa9if",
         user="bozhbeiwwhicaz",
