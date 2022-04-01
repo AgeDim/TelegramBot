@@ -17,7 +17,7 @@ def start(message):
 @bot.message_handler(commands=["info", "Info"])
 def info(message):
     bot.send_message(message.chat.id,
-                     f"Номер телефона:\n   +77782185661\n  +77017490261\nАдрес: Брюсова 4/35 офис 1\nПочта: Rus0867@Mail.Ru\nГрафик работы: Пн - Пт / 9:00 - 18:00\nСайт:comtrade.kz")
+                     f"Номера телефона:\n   +77782185661 - Сергей\n  +77017490261 - Руслан\nАдрес: Актуальный адрес не известен\nПочта: Rus0867@Mail.Ru\nГрафик работы: Пн - Пт / 9:00 - 18:00\nСайт: comtrade.kz")
 
 
 @bot.message_handler(commands=['help', 'Help'])
