@@ -66,7 +66,6 @@ def print_all_commands(call):
     catalogList = dictOfCategory.values()
     if call.data:
         if call.data in catalogList:
-            nameOfCategory = call.data
             ress = []
             res = dataBase.getPic(call.data)
             preCatalog = types.InlineKeyboardMarkup(row_width=1)
@@ -77,6 +76,7 @@ def print_all_commands(call):
             category = preCatalog
             for key, val in dictOfCategory.items():
                 if call.data == val:
+                    nameOfCategory = key
                     bot.send_message(call.message.chat.id, key, reply_markup=preCatalog)
         if call.data in ids:
             res = dataBase.getPicById(call.data)
