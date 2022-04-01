@@ -30,7 +30,7 @@ def help(message):
 def view_catalog(message):
     bot.send_message(message.chat.id, 'Каталог', reply_markup=catalog)
 
-
+infoMessage = 'Подробную информацию можно посмотреть на сайте: comtrade.kz'
 catalog = types.InlineKeyboardMarkup(row_width=1)
 autochem = types.InlineKeyboardButton(text="АвтоХимия", callback_data='auto')
 wood = types.InlineKeyboardButton(text="Антисептики, отбеливатели для древесины", callback_data='wood')
@@ -77,7 +77,7 @@ def print_all_commands(call):
             res = dataBase.getPicById(call.data)
             img = Image.open(res.url)
             bot.send_photo(call.message.chat.id, img)
-            bot.send_message(call.message.chat.id, str(res.review), reply_markup=keyboard)
+            bot.send_message(call.message.chat.id, str(res.review + '\n' + infoMessage), reply_markup=keyboard)
 
 
 @bot.message_handler(content_types=['text'])
