@@ -53,13 +53,20 @@ keyboard.add(button)
 @bot.callback_query_handler(func=lambda call: True)
 def print_all_commands(call):
     if call.data:
+        ress = []
         res = dataBase.getPic(call.data)
-
-        for data in res:
-            img = Image.open(data.url)
-            bot.send_chat_action(call.message.chat.id, 'upload_photo')
-            bot.send_photo(call.message.chat.id, img)
-            bot.send_message(call.message.chat.id, str(data.review), reply_markup=keyboard)
+        if call.data == 'auto':
+            preCatalog = types.InlineKeyboardMarkup(row_width=1)
+            for data in res:
+                ress.append(types.InlineKeyboardButton(text=data.review, callback_data=data.id))
+            for i in range(len(ress)):
+                preCatalog.add(ress[i])
+            bot.send_message(call.message.chat.id, call.data, reply_markup=preCatalog)
+        # for data in res:
+        #     img = Image.open(data.url)
+        #     bot.send_chat_action(call.message.chat.id, 'upload_photo')
+        #     bot.send_photo(call.message.chat.id, img)
+        #     bot.send_message(call.message.chat.id, str(data.review), reply_markup=keyboard)
 
 @bot.message_handler(content_types=['text'])
 def getText(message):
