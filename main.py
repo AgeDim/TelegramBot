@@ -1,5 +1,5 @@
-import urllib
-from io import BytesIO
+import requests
+from PIL import Image
 
 import telebot
 from telebot import types
@@ -28,7 +28,7 @@ def help(message):
 
 @bot.message_handler(commands=['catalog', 'Catalog'])
 def view_catalog(message):
-    catalog = types.InlineKeyboardMarkup()
+    catalog = types.InlineKeyboardMarkup(row_width=1)
     autochem = types.InlineKeyboardButton(text="АвтоХимия", callback_data='auto')
     wood = types.InlineKeyboardButton(text="Антисептики, отбеливатели для древесины", callback_data='wood')
     household = types.InlineKeyboardButton(text="Бытовая химия", callback_data='life')
@@ -47,20 +47,18 @@ def view_catalog(message):
 
 @bot.callback_query_handler(func=lambda call: True)
 def print_all_commands(call):
-    match str(call.data):
-        case 'auto':
-            res = dataBase.getPic(call.data)
-
-    for data in res:
-        img = BytesIO(urllib.request.urlopen(data.url).read())
-        bot.send_chat_action(call.chat.id, 'upload_photo')
-        bot.send_photo(call.chat.id, img)
-        bot.send_message(call.chat.id, str(data.review))
+    if call.data:
+        res = dataBase.getPic(call.data)
+        for data in res:
+            img = Image.open(data.url)
+            bot.send_chat_action(call.message.chat.id, 'upload_photo')
+            bot.send_photo(call.message.chat.id, img)
+            bot.send_message(call.message.chat.id, str(data.review))
 
 
 bot.polling(none_stop=True, interval=0)
 
-# start - Преветствие
+# start - Приветствие
 # info - Информация о компании
 # catalog - Каталог товаров
 # help - Доступные команды
