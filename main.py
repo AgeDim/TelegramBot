@@ -85,6 +85,7 @@ def print_all_commands(call):
 def getText(message):
     if message.text == 'Назад в каталог!':
         bot.send_message(message.chat.id, 'Каталог', reply_markup=catalog)
+        types.ReplyKeyboardRemove()
 
 
 bot.polling(none_stop=True, interval=0)
