@@ -55,11 +55,18 @@ keyboard.add(button, button2)
 @bot.callback_query_handler(func=lambda call: True)
 def print_all_commands(call):
     global category
-    ids = [str(i) for i in range(1,62)]
-    dictOfCategory = {"АвтоХимия": 'auto', "Антисептики, отбеливатели для древесины" : 'wood', "Гидроизоляционные материалы" : 'hydro', "Добавки для бетона" : 'biton', "Лаки, краски, растворители" : 'paint', "Огнебиозащитные составы" : 'fire', "Очистка, защита и обработка минеральных поверхностей" : 'mineral', "Составы для бань и саун" : 'bath', "Фасадный декор" : 'decor', "Химия для бассейнов" : 'pool', "Бытовая химия": 'life'}
+    global nameOfCategory
+    ids = [str(i) for i in range(1, 62)]
+    dictOfCategory = {"АвтоХимия": 'auto', "Антисептики, отбеливатели для древесины": 'wood',
+                      "Гидроизоляционные материалы": 'hydro', "Добавки для бетона": 'biton',
+                      "Лаки, краски, растворители": 'paint', "Огнебиозащитные составы": 'fire',
+                      "Очистка, защита и обработка минеральных поверхностей": 'mineral',
+                      "Составы для бань и саун": 'bath', "Фасадный декор": 'decor', "Химия для бассейнов": 'pool',
+                      "Бытовая химия": 'life'}
     catalogList = dictOfCategory.values()
     if call.data:
         if call.data in catalogList:
+            nameOfCategory = call.data
             ress = []
             res = dataBase.getPic(call.data)
             preCatalog = types.InlineKeyboardMarkup(row_width=1)
@@ -84,7 +91,7 @@ def getText(message):
         bot.send_message(message.chat.id, 'Каталог', reply_markup=catalog)
         types.ReplyKeyboardRemove()
     if message.text == 'Назад в категорию!':
-        bot.send_message(message.chat.id, 'Каталог', reply_markup=category)
+        bot.send_message(message.chat.id, nameOfCategory, reply_markup=category)
 
 
 bot.polling(none_stop=True, interval=0)
