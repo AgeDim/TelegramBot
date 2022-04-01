@@ -53,25 +53,27 @@ keyboard.add(button)
 
 @bot.callback_query_handler(func=lambda call: True)
 def print_all_commands(call):
-
-    dictOfCategory = {"АвтоХимия" : 'auto', "Антисептики, отбеливатели для древесины" : 'wood', "Гидроизоляционные материалы" : 'hydro', "Добавки для бетона" : 'biton', "Лаки, краски, растворители" : 'paint', "Огнебиозащитные составы" : 'fire', "Очистка, защита и обработка минеральных поверхностей" : 'mineral', "Составы для бань и саун" : 'bath', "Фасадный декор" : 'decor', "Химия для бассейнов" : 'pool', "Бытовая химия": 'life'}
-    catalogList = dictOfCategory.keys()
+    ids = [str(i) for i in range(1,62)]
+    dictOfCategory = {"АвтоХимия": 'auto', "Антисептики, отбеливатели для древесины" : 'wood', "Гидроизоляционные материалы" : 'hydro', "Добавки для бетона" : 'biton', "Лаки, краски, растворители" : 'paint', "Огнебиозащитные составы" : 'fire', "Очистка, защита и обработка минеральных поверхностей" : 'mineral', "Составы для бань и саун" : 'bath', "Фасадный декор" : 'decor', "Химия для бассейнов" : 'pool', "Бытовая химия": 'life'}
+    catalogList = dictOfCategory.values()
     if call.data:
-        ress = []
-        res = dataBase.getPic(call.data)
-        preCatalog = types.InlineKeyboardMarkup(row_width=1)
-        for data in res:
-            ress.append(types.InlineKeyboardButton(text=data.review, callback_data=data.id))
-        for i in range(len(ress)):
-            preCatalog.add(ress[i])
-        for key, val in dictOfCategory.items():
-            if call.data == val:
-                bot.send_message(call.message.chat.id, key, reply_markup=preCatalog)
-        # for data in res:
-        #     img = Image.open(data.url)
-        #     bot.send_chat_action(call.message.chat.id, 'upload_photo')
-        #     bot.send_photo(call.message.chat.id, img)
-        #     bot.send_message(call.message.chat.id, str(data.review), reply_markup=keyboard)
+        if call.data in catalogList:
+            ress = []
+            res = dataBase.getPic(call.data)
+            preCatalog = types.InlineKeyboardMarkup(row_width=1)
+            for data in res:
+                ress.append(types.InlineKeyboardButton(text=data.review, callback_data=data.id))
+            for i in range(len(ress)):
+                preCatalog.add(ress[i])
+            for key, val in dictOfCategory.items():
+                if call.data == val:
+                    bot.send_message(call.message.chat.id, key, reply_markup=preCatalog)
+        if call.data in ids:
+            res = dataBase.getPicById(call.data)
+            img = Image.open(res.url)
+            bot.send_chat_action(call.message.chat.id, 'upload_photo')
+            bot.send_photo(call.message.chat.id, img)
+            bot.send_message(call.message.chat.id, str(res.review), reply_markup=keyboard)
 
 
 @bot.message_handler(content_types=['text'])
