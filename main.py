@@ -78,6 +78,7 @@ def print_all_commands(call):
                     bot.send_message(call.message.chat.id, str(data.review), reply_markup=keyboard)
 
 
+
 @bot.message_handler(content_types=['text'])
 def getText(message):
     if message.text == 'Назад!':
