@@ -48,8 +48,7 @@ catalog.add(autochem, wood, household, hydro, biton, paint, fire, mineral, bath,
 
 keyboard = types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True, one_time_keyboard=True)
 button = types.KeyboardButton(text="Назад в каталог!")
-button2 = types.KeyboardButton(text="Назад в категорию!")
-keyboard.add(button, button2)
+keyboard.add(button)
 
 
 @bot.callback_query_handler(func=lambda call: True)
