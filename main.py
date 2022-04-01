@@ -50,22 +50,16 @@ keyboard = types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True, one_time
 button = types.KeyboardButton(text="Назад в каталог!")
 button2 = types.KeyboardButton(text="Назад в категорию!")
 keyboard.add(button, button2)
-global nameOfCategory
-dictOfCategory = {"АвтоХимия": 'auto', "Антисептики, отбеливатели для древесины": 'wood',
-                      "Гидроизоляционные материалы": 'hydro', "Добавки для бетона": 'biton',
-                      "Лаки, краски, растворители": 'paint', "Огнебиозащитные составы": 'fire',
-                      "Очистка, защита и обработка минеральных поверхностей": 'mineral',
-                      "Составы для бань и саун": 'bath', "Фасадный декор": 'decor', "Химия для бассейнов": 'pool',
-                      "Бытовая химия": 'life'}
+
 
 @bot.callback_query_handler(func=lambda call: True)
 def print_all_commands(call):
     global category
-    ids = [str(i) for i in range(1, 62)]
+    ids = [str(i) for i in range(1,62)]
+    dictOfCategory = {"АвтоХимия": 'auto', "Антисептики, отбеливатели для древесины" : 'wood', "Гидроизоляционные материалы" : 'hydro', "Добавки для бетона" : 'biton', "Лаки, краски, растворители" : 'paint', "Огнебиозащитные составы" : 'fire', "Очистка, защита и обработка минеральных поверхностей" : 'mineral', "Составы для бань и саун" : 'bath', "Фасадный декор" : 'decor', "Химия для бассейнов" : 'pool', "Бытовая химия": 'life'}
     catalogList = dictOfCategory.values()
     if call.data:
         if call.data in catalogList:
-            nameOfCategory = call.data
             ress = []
             res = dataBase.getPic(call.data)
             preCatalog = types.InlineKeyboardMarkup(row_width=1)
@@ -86,15 +80,11 @@ def print_all_commands(call):
 
 @bot.message_handler(content_types=['text'])
 def getText(message):
-    name = ''
     if message.text == 'Назад в каталог!':
         bot.send_message(message.chat.id, 'Каталог', reply_markup=catalog)
         types.ReplyKeyboardRemove()
     if message.text == 'Назад в категорию!':
-        for key, val in dictOfCategory.items():
-            if nameOfCategory == val:
-                name = key
-        bot.send_message(message.chat.id, name, reply_markup=category)
+        bot.send_message(message.chat.id, 'Каталог', reply_markup=category)
 
 
 bot.polling(none_stop=True, interval=0)
