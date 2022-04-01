@@ -53,10 +53,9 @@ keyboard.add(button)
 
 @bot.callback_query_handler(func=lambda call: True)
 def print_all_commands(call):
-    catalogList = ["АвтоХимия", "Антисептики, отбеливатели для древесины", "Бытовая химия",
-                   "Гидроизоляционные материалы", "Добавки для бетона", "Лаки, краски, растворители",
-                   "Огнебиозащитные составы", "Очистка, защита и обработка минеральных поверхностей",
-                   "Составы для бань и саун", "Фасадный декор", "Химия для бассейнов"]
+
+    dictOfCategory = {"АвтоХимия" : 'auto', "Антисептики, отбеливатели для древесины" : 'wood', "Гидроизоляционные материалы" : 'hydro', "Добавки для бетона" : 'biton', "Лаки, краски, растворители" : 'paint', "Огнебиозащитные составы" : 'fire', "Очистка, защита и обработка минеральных поверхностей" : 'mineral', "Составы для бань и саун" : 'bath', "Фасадный декор" : 'decor', "Химия для бассейнов" : 'pool', "Бытовая химия": 'life'}
+    catalogList = dictOfCategory.keys()
     if call.data:
         ress = []
         res = dataBase.getPic(call.data)
@@ -65,7 +64,9 @@ def print_all_commands(call):
             ress.append(types.InlineKeyboardButton(text=data.review, callback_data=data.id))
         for i in range(len(ress)):
             preCatalog.add(ress[i])
-        bot.send_message(call.message.chat.id, call.data, reply_markup=preCatalog)
+        for key, val in dictOfCategory.items():
+            if call.data == val:
+                bot.send_message(call.message.chat.id, key, reply_markup=preCatalog)
         # for data in res:
         #     img = Image.open(data.url)
         #     bot.send_chat_action(call.message.chat.id, 'upload_photo')
